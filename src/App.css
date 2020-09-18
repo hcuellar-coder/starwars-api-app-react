@@ -1,38 +1,190 @@
-.App {
-  text-align: center;
+@font-face {
+    font-family: 'Star Jedi Hollow';
+    src: url('./fonts/StarJediHollow.woff2') format('woff2'),
+        url('./fonts/StarJediHollow.woff') format('woff'),
+        url('./fonts/StarJediHollow.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+@font-face {
+    font-family: 'Star Jedi';
+    src: url('./fonts/StarJedi.woff2') format('woff2'),
+        url('./fonts/StarJedi.woff') format('woff'),
+        url('./fonts/StarJedi.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+@font-face {
+    font-family: 'moonhouse';
+    src: url('./fonts/moonhouse.woff2') format('woff2'),
+        url('./fonts/moonhouse.woff') format('woff'),
+        url('./fonts/moonhouse.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+
+body {
+    display: flex;
+    justify-content: center;
+    background-color: black;
 }
 
-.App-link {
-  color: #61dafb;
+table, td, th {
+    border-color: aqua;
+    border-style: solid;
+    border-collapse: collapse;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.form-control:focus {
+    outline: none;
+    border-color: #FF0000;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6);
+}
+
+.button:focus {
+    outline: none;
+    border-color: #FF0000;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6);
+}
+
+.cell-name {
+    min-width: 100px;
+}
+
+.cell-birthday {
+    min-width: 50px;
+}
+
+.cell-height {
+    min-width: 50px;
+}
+
+.cell-mass {
+    min-width: 50px;
+}
+
+.cell-homeworld {
+    min-width: 150px;
+}
+
+.cell-species {
+    min-width: 100px;
+}
+
+.page-link {
+    font-family: 'moonhouse';
+    color: yellow;
+    background-color: black;
+    border-color: yellow ;
+}
+
+.page-item.active .page-link {
+    color: aqua;
+    background-color: black;
+    border-color: aqua;
+}
+
+.page-link:focus, .page-link:hover {
+    color: red;
+    background-color: black;
+    border-color: red;
+}
+
+#app-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#star-wars-header {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Star Jedi Hollow';
+    font-style: italic;
+    font-size: 48px;
+    color: yellow;
+}
+
+#search-label {
+    font-family: 'Star Jedi Hollow';
+    font-style: italic;
+    color: red;
+}
+
+#search-bar-div {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    max-width: 500px;
+}
+
+#search-bar {
+    font-family: 'moonhouse';
+    font-size: 14px;
+    font-weight: 100;
+    text-align: center;
+    color: red;
+    background-color: black;
+    width: 100%;
+    border-style: double;
+    border-width: 4px;
+    border-radius: 8px;
+    border-color: red;
+}
+
+#search-button {
+    font-family: 'moonhouse';
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+    color: red;
+    background-color: black;
+    border-style: double;
+    border-width: 4px;
+    border-radius: 8px;
+    border-color: red;
+}
+
+#character-table{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    max-width: 500px;
+    margin-top: 10px;
+}
+
+#character-table-header {
+    font-family: 'moonhouse';
+    font-size: 16px;
+    font-weight: 100;
+    color: aqua;
+}
+
+#character-table-body {
+    font-family: 'moonhouse';
+    font-size: 12px;
+    text-align: center;
+    color: white;
+}
+
+#table-pagination {
+    display: flex;
+    justify-content: center;
+    font-size: 12px;
+}
+
+#loading-spinner-div {
+    display: flex;
+    justify-content: center;
+}
+
+#loading-spinner {
+    width: 270px;
+    height: 203px;
 }
