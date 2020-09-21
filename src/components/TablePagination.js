@@ -12,6 +12,7 @@ function TablePagination(props) {
     }
 
     useEffect(() => {
+        // console.log(props.activePage);
         setActive(props.activePage);
     }, [props.activePage])
 

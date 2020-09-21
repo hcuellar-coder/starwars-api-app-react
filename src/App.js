@@ -13,15 +13,47 @@ function App() {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true)
   const [characterTable, setCharacterTable] = useState([]);
+  // const [searching, setSearching] = useState(false);
+
 
   function handleCharacterCount(characterCount) {
     let pages = Math.ceil(characterCount / 10);
     setPaginationCount(pages);
-    localStorage.setItem('paginationCount', paginationCount);
+    // console.log('searching =', searching);
+    if (localStorage.getItem('searching') === 'true') {
+      // console.log('in Searching pages');
+      localStorage.setItem('searchPaginationCount', pages);
+    } else {
+      // console.log('not in Searching pages');
+      localStorage.setItem('paginationCount', pages);
+    }
   }
 
   function handlePage(page) {
+    localStorage.setItem('pageLastOn', page);
     setPage(page);
+  }
+
+  function handleSearchBar(character) {
+    setPage(1);
+    localStorage.setItem('searching', true);
+    localStorage.setItem('searchInput', character);
+    setLoading(true);
+    setCharacterTable([]);
+    createSearchCharacterTable(character, 1);
+  }
+
+  function handleClearButton() {
+    let searchCount = localStorage.getItem('searchPaginationCount');
+    localStorage.setItem('searching', false);
+    localStorage.setItem('searchInput', ' ');
+    localStorage.removeItem('searchPaginationCount', '');
+    for (let i = 1; i <= searchCount; i++) {
+      localStorage.removeItem('searchPage' + i, []);
+    }
+    setPage(1);
+    setCharacterTable(JSON.parse(localStorage.getItem('page' + 1)));
+    setPaginationCount(localStorage.getItem('paginationCount'));
   }
 
   const getCharacters = async (page) => {
@@ -56,8 +88,41 @@ function App() {
       .catch((err) => console.log('Error', err));
   }
 
-  async function createCharacterTable(page) {
+  const searchCharacter = async (element, page) => {
+    let search = 'https://swapi.dev/api/people/?search=' + element + '&page=' + page;
+    return await axios
+      .get(search)
+      .then((results) => {
+        // console.log(results.data);
+        handleCharacterCount(results.data.count);
+        return results.data.results;
+      })
+      .catch((err) => console.log('Error', err));
+  }
+
+  function createCharacterTable(page) {
+    localStorage.setItem('searching', false);
     getCharacters(page).then(async characters => {
+      for (const element of characters) {
+        await getHomeworld(element.homeworld.toString()).then(async newHomeworld => {
+          await getSpecies(element.species.toString()).then(async newSpecies => {
+            setCharacterTable(characterTable => [...characterTable, {
+              name: element.name,
+              birth_year: element.birth_year,
+              height: element.height,
+              mass: element.mass,
+              homeworld: newHomeworld.name,
+              species: newSpecies.name
+            }]);
+          });
+        });
+      }
+      setLoading(false);
+    })
+  }
+
+  function createSearchCharacterTable(character, page) {
+    searchCharacter(character, page).then(async characters => {
       for (const element of characters) {
         await getHomeworld(element.homeworld.toString()).then(async newHomeworld => {
           await getSpecies(element.species.toString()).then(async newSpecies => {
@@ -79,17 +144,35 @@ function App() {
   useEffect(() => {
     setLoading(true);
     setCharacterTable([]);
-    if (localStorage.getItem('page' + page)) {
-      setLoading(false);
-      setPaginationCount(localStorage.getItem('paginationCount'));
-      setCharacterTable(JSON.parse(localStorage.getItem('page' + page)));
+    if (localStorage.getItem('searching') === 'true') {
+      if (localStorage.getItem('searchPage' + page)) {
+        // console.log('searching page');
+        setLoading(false);
+        setPaginationCount(localStorage.getItem('searchPaginationCount'));
+        setCharacterTable(JSON.parse(localStorage.getItem('searchPage' + page)));
+      } else {
+        createSearchCharacterTable(localStorage.getItem('searchInput'), page);
+      }
     } else {
-      createCharacterTable(page)
+      if (localStorage.getItem('page' + page)) {
+        setLoading(false);
+        setPaginationCount(localStorage.getItem('paginationCount'));
+        setCharacterTable(JSON.parse(localStorage.getItem('page' + page)));
+      } else {
+        // console.log('creating Table');
+        createCharacterTable(page)
+      }
     }
   }, [page])
 
   useEffect(() => {
-    localStorage.setItem('page' + page, JSON.stringify(characterTable));
+    // console.log(localStorage.getItem('searching'));
+    if (localStorage.getItem('searching') === 'true') {
+      localStorage.setItem('searchPage' + page, JSON.stringify(characterTable));
+    } else {
+      // console.log('dont know why but this is happening');
+      localStorage.setItem('page' + page, JSON.stringify(characterTable));
+    }
   }, [characterTable])
 
 
@@ -103,7 +186,7 @@ function App() {
   return (
     <div id="app-div">
       <Header />
-      <SearchBar />
+      <SearchBar handleSearchBar={handleSearchBar} handleClearButton={handleClearButton} searchInput={localStorage.getItem('searchInput')} />
       <br />
       {loading ? <Spinner /> :
         <Table />
@@ -134,3 +217,35 @@ export default App;
 //   console.log('this is happening');
 //   // 
 // });
+
+
+// const getCharacters = async (page) => {
+//   return await axios
+//     .get('http://swapi.dev/api/people/?page=' + page)
+//     .then((results) => {
+//       handleCharacterCount(results.data.count);
+//       return results.data.results;
+//     })
+//     .catch((err) => console.log('Error', err));
+// }
+
+
+// function createCharacterTable(page) {
+//   getCharacters(page).then(async characters => {
+//     for (const element of characters) {
+//       await getHomeworld(element.homeworld.toString()).then(async newHomeworld => {
+//         await getSpecies(element.species.toString()).then(async newSpecies => {
+//           setCharacterTable(characterTable => [...characterTable, {
+//             name: element.name,
+//             birth_year: element.birth_year,
+//             height: element.height,
+//             mass: element.mass,
+//             homeworld: newHomeworld.name,
+//             species: newSpecies.name
+//           }]);
+//         });
+//       });
+//     }
+//     setLoading(false);
+//   })
+// }

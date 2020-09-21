@@ -124,6 +124,12 @@ table, td, th {
     max-width: 500px;
 }
 
+#buttons-div {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
 #search-bar {
     font-family: 'moonhouse';
     font-size: 14px;
@@ -142,6 +148,7 @@ table, td, th {
     font-family: 'moonhouse';
     font-size: 14px;
     margin-top: 10px;
+    margin-right: 5px;
     text-align: center;
     color: red;
     background-color: black;
@@ -149,6 +156,20 @@ table, td, th {
     border-width: 4px;
     border-radius: 8px;
     border-color: red;
+}
+
+#clear-button {
+    font-family: 'moonhouse';
+    font-size: 14px;
+    margin-top: 10px;
+    margin-left: 5px;
+    text-align: center;
+    color: yellow;
+    background-color: black;
+    border-style: double;
+    border-width: 4px;
+    border-radius: 8px;
+    border-color: yellow;
 }
 
 #character-table{
