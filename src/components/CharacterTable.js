@@ -1,12 +1,6 @@
 import React from 'react';
 import { Container, Table } from 'react-bootstrap';
 
-
-// take into account the count and mayber return the number of paginations needed? maybe return a 
-// remember there is a search function
-// props could be page number from pagination,
-// character name, and pagination if simple search
-
 function CharacterTable(props) {
 
     return (
