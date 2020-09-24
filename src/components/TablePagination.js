@@ -4,11 +4,10 @@ import { Pagination } from 'react-bootstrap';
 function TablePagination(props) {
     const [active, setActive] = useState(1);
     let pages = [];
-    // const paginationCount = props.paginationCount;
 
     function handleClick(page) {
         setActive(page);
-        props.handlePage(page);
+        props.handleNewPage(page);
     }
 
     useEffect(() => {

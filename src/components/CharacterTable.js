@@ -1,10 +1,10 @@
 import React from 'react';
-import { Container, Table } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 
 function CharacterTable(props) {
 
     return (
-        <Container id="character-table">
+        <div id="character-table">
             <Table hover striped>
                 <thead id="character-table-header">
                     <tr>
@@ -17,7 +17,6 @@ function CharacterTable(props) {
                     </tr>
                 </thead>
                 <tbody id="character-table-body">
-
                     {props.characterTable.map((character, index) => (
                         <tr key={index}>
                             <td>{character.name}</td>
@@ -30,7 +29,7 @@ function CharacterTable(props) {
                     ))}
                 </tbody>
             </Table>
-        </Container>
+        </div>
     )
 }
 
