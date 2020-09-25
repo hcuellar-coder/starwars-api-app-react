@@ -4,6 +4,7 @@ import SearchBar from './components/SearchBar';
 import CharacterTable from './components/CharacterTable';
 import TablePagination from './components/TablePagination';
 import Spinner from './components/Spinner';
+import API from './components/API';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -38,20 +39,18 @@ function App() {
     setLoading(true);
     setCharacterTable([]);
     if (localStorage.getItem('searching') === 'true') {
-      if (localStorage.getItem('searchPage' + page)) {
+      if (localStorage.getItem(`searchPage${page}`)) {
         setLoading(false);
         setPaginationCount(localStorage.getItem('searchPaginationCount'));
-        setCharacterTable(JSON.parse(localStorage.getItem('searchPage' + page)));
+        setCharacterTable(JSON.parse(localStorage.getItem(`searchPage${page}`)));
       } else {
-        if (page > 1) {
-          createSearchTable(searchInput, page);
-        }
+        createSearchTable(searchInput, page);
       }
     } else {
-      if (localStorage.getItem('page' + page)) {
+      if (localStorage.getItem(`page${page}`)) {
         setLoading(false);
         setPaginationCount(localStorage.getItem('paginationCount'));
-        setCharacterTable(JSON.parse(localStorage.getItem('page' + page)));
+        setCharacterTable(JSON.parse(localStorage.getItem(`page${page}`)));
       } else {
         createCharacterTable(page);
       }
@@ -67,7 +66,7 @@ function App() {
     if (localStorage.getItem('searching') === 'true') {
       let searchCount = localStorage.getItem('searchPaginationCount');
       for (let i = 1; i <= searchCount; i++) {
-        localStorage.removeItem('searchPage' + i, []);
+        localStorage.removeItem(`searchPage${i}`, []);
       }
     }
     localStorage.setItem('searching', true);
@@ -79,12 +78,12 @@ function App() {
   function handleClearButton() {
     setSearchInput('');
     setPage(1);
-    setCharacterTable(JSON.parse(localStorage.getItem('page' + 1)));
+    setCharacterTable(JSON.parse(localStorage.getItem(`page${1}`)));
     setPaginationCount(localStorage.getItem('paginationCount'));
 
     let searchCount = localStorage.getItem('searchPaginationCount');
     for (let i = 1; i <= searchCount; i++) {
-      localStorage.removeItem('searchPage' + i, []);
+      localStorage.removeItem(`searchPage${i}`, []);
     }
     localStorage.setItem('searching', false);
     localStorage.setItem('searchInput', '');
@@ -93,8 +92,8 @@ function App() {
   }
 
   const getCharacters = async (page) => {
-    return await axios
-      .get('https://swapi.dev/api/people/?page=' + page)
+    return await API
+      .get(`people/?page=${page}`)
       .then((results) => {
         return results.data;
       })
@@ -103,10 +102,9 @@ function App() {
 
   const getSpecies = async (element) => {
     if (!element) {
-      element = 'https://swapi.dev/api/species/1/';
+      element = 'species/1/';
     }
-
-    return await axios
+    return await API
       .get(element)
       .then((result) => {
         return result.data;
@@ -115,7 +113,7 @@ function App() {
   }
 
   const getHomeworld = async (element) => {
-    return await axios
+    return await API
       .get(element)
       .then((results) => {
         return results.data;
@@ -124,7 +122,7 @@ function App() {
   }
 
   const searchCharacter = async (element, page) => {
-    let search = 'https://swapi.dev/api/people/?search=' + element + '&page=' + page;
+    let search = `https://swapi.dev/api/people/?search=${element}&page=${page}`;
     return await axios
       .get(search)
       .then((results) => {
@@ -156,8 +154,8 @@ function App() {
 
   async function fetchSpeciesandHomeWorld(characters) {
     for (const element of characters.results) {
-      await getHomeworld(element.homeworld.toString()).then(async newHomeworld => {
-        await getSpecies(element.species.toString()).then(async newSpecies => {
+      await getHomeworld(element.homeworld.toString().slice(21)).then(async newHomeworld => {
+        await getSpecies(element.species.toString().slice(21)).then(async newSpecies => {
           setCharacterTable(characterTable => [...characterTable, {
             name: element.name,
             birth_year: element.birth_year,
@@ -170,24 +168,30 @@ function App() {
       });
     }
   }
-
   useEffect(() => {
-    setLoading(true);
-    setCharacterTable([]);
-    if (localStorage.getItem('page' + 1)) {
-      setLoading(false);
-      setPaginationCount(localStorage.getItem('paginationCount'));
-      setCharacterTable(JSON.parse(localStorage.getItem('page' + 1)));
+    if (localStorage.getItem('searching') === 'true') {
+      if (localStorage.getItem(`searchPage${page}`)) {
+        setLoading(false);
+        setSearchInput(localStorage.getItem('searchInput'));
+        setPaginationCount(localStorage.getItem('searchPaginationCount'));
+        setCharacterTable(JSON.parse(localStorage.getItem(`searchPage${page}`)));
+      }
     } else {
-      createCharacterTable(1);
+      if (localStorage.getItem(`page${page}`)) {
+        setLoading(false);
+        setPaginationCount(localStorage.getItem('paginationCount'));
+        setCharacterTable(JSON.parse(localStorage.getItem(`page${page}`)));
+      } else {
+        createCharacterTable(1);
+      }
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (localStorage.getItem('searching') === 'true') {
-      localStorage.setItem('searchPage' + page, JSON.stringify(characterTable));
+      localStorage.setItem(`searchPage${page}`, JSON.stringify(characterTable));
     } else {
-      localStorage.setItem('page' + page, JSON.stringify(characterTable));
+      localStorage.setItem(`page${page}`, JSON.stringify(characterTable));
     }
   }, [characterTable, page])
 
