@@ -73,6 +73,7 @@ function App() {
         localStorage.removeItem(`searchPage${i}`, []);
       }
     }
+    localStorage.setItem('page', 1);
     localStorage.setItem('searching', true);
     localStorage.setItem('searchInput', character);
 
@@ -93,7 +94,7 @@ function App() {
     localStorage.setItem('searching', false);
     localStorage.setItem('searchInput', '');
     localStorage.removeItem('searchPaginationCount', '');
-    localStorage.removeItem('page');
+    localStorage.setItem('page', 1);
   }
 
   const getCharacters = async (page) => {
