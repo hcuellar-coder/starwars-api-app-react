@@ -13,6 +13,7 @@ function App() {
   const [paginationCount, setPaginationCount] = useState(0);
   const [searchInput, setSearchInput] = useState('');
   const [loading, setLoading] = useState(true)
+  const [searchFailed, setSearchFailed] = useState(false);
   const [characterTable, setCharacterTable] = useState([]);
   const [page, setPage] = useState(() => {
     if (localStorage.getItem('page')) {
@@ -24,6 +25,9 @@ function App() {
 
   function handlePagination(characterCount) {
     let pages = Math.ceil(characterCount / 10);
+    if (pages < 1) {
+      setSearchFailed(true);
+    }
     setPaginationCount(pages);
     if (localStorage.getItem('searching') === 'true') {
       localStorage.setItem('searchPaginationCount', pages);
@@ -77,6 +81,7 @@ function App() {
 
   function handleClearButton() {
     setSearchInput('');
+    setSearchFailed(false);
     setPage(1);
     setCharacterTable(JSON.parse(localStorage.getItem(`page${1}`)));
     setPaginationCount(localStorage.getItem('paginationCount'));
@@ -170,11 +175,17 @@ function App() {
   }
   useEffect(() => {
     if (localStorage.getItem('searching') === 'true') {
-      if (localStorage.getItem(`searchPage${page}`)) {
+      let searchArray = JSON.parse(localStorage.getItem(`searchPage${page}`));
+      if (searchArray !== undefined && searchArray.length > 0) {
         setLoading(false);
         setSearchInput(localStorage.getItem('searchInput'));
         setPaginationCount(localStorage.getItem('searchPaginationCount'));
         setCharacterTable(JSON.parse(localStorage.getItem(`searchPage${page}`)));
+      }
+      else {
+        setSearchInput(localStorage.getItem('searchInput'));
+        setLoading(false);
+        setSearchFailed(true);
       }
     } else {
       if (localStorage.getItem(`page${page}`)) {
@@ -195,6 +206,17 @@ function App() {
     }
   }, [characterTable, page])
 
+  const Table = () => (
+    <div>
+      <TablePagination
+        paginationCount={paginationCount}
+        handleNewPage={handleNewPage}
+        activePage={page} />
+      <CharacterTable
+        characterTable={characterTable} />
+    </div>
+  )
+
   const UserInterface = () => (
     <div>
       <SearchBar
@@ -202,12 +224,12 @@ function App() {
         handleClearButton={handleClearButton}
         searchInput={searchInput} />
       <br />
-      <TablePagination
-        paginationCount={paginationCount}
-        handleNewPage={handleNewPage}
-        activePage={page} />
-      <CharacterTable
-        characterTable={characterTable} />
+      {searchFailed ?
+        <div id="search-failed-div">
+          Find a character the search did not. Hmm. -Yoda
+        </div> :
+        <Table />
+      }
     </div>
   )
 
