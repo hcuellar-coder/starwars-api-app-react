@@ -2,7 +2,6 @@ import React from 'react';
 import { Table } from 'react-bootstrap';
 
 function CharacterTable(props) {
-
     return (
         <div id="character-table">
             <Table hover striped>

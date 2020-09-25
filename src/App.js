@@ -47,7 +47,7 @@ function App() {
         setPaginationCount(localStorage.getItem('searchPaginationCount'));
         setCharacterTable(JSON.parse(localStorage.getItem(`searchPage${page}`)));
       } else {
-        createSearchTable(searchInput, page);
+        createSearchCharacterTable(searchInput, page);
       }
     } else {
       if (localStorage.getItem(`page${page}`)) {
@@ -77,7 +77,7 @@ function App() {
     localStorage.setItem('searching', true);
     localStorage.setItem('searchInput', character);
 
-    createSearchTable(character, 1);
+    createSearchCharacterTable(character, 1);
   }
 
   function handleClearButton() {
@@ -91,13 +91,14 @@ function App() {
     for (let i = 1; i <= searchCount; i++) {
       localStorage.removeItem(`searchPage${i}`, []);
     }
+
     localStorage.setItem('searching', false);
     localStorage.setItem('searchInput', '');
     localStorage.removeItem('searchPaginationCount', '');
     localStorage.setItem('page', 1);
   }
 
-  const getCharacters = async (page) => {
+  const fetchCharacters = async (page) => {
     return await API
       .get(`people/?page=${page}`)
       .then((results) => {
@@ -106,10 +107,11 @@ function App() {
       .catch((err) => console.log('Error', err));
   }
 
-  const getSpecies = async (element) => {
+  const fetchSpecies = async (element) => {
     if (!element) {
       element = 'species/1/';
     }
+
     return await API
       .get(element)
       .then((result) => {
@@ -118,7 +120,7 @@ function App() {
       .catch((err) => console.log('Error', err));
   }
 
-  const getHomeworld = async (element) => {
+  const fetchHomeworld = async (element) => {
     return await API
       .get(element)
       .then((results) => {
@@ -127,7 +129,7 @@ function App() {
       .catch((err) => console.log('Error', err));
   }
 
-  const searchCharacter = async (element, page) => {
+  const searchForCharacter = async (element, page) => {
     let search = `people/?search=${element}&page=${page}`;
     return await API
       .get(search)
@@ -139,7 +141,7 @@ function App() {
 
   function createCharacterTable(page) {
     localStorage.setItem('searching', false);
-    getCharacters(page).then(async characters => {
+    fetchCharacters(page).then(async characters => {
       await fetchSpeciesandHomeWorld(characters);
       return characters.count;
     }).then((count) => {
@@ -148,8 +150,8 @@ function App() {
     })
   }
 
-  function createSearchTable(character, page) {
-    searchCharacter(character, page).then(async characters => {
+  function createSearchCharacterTable(character, page) {
+    searchForCharacter(character, page).then(async characters => {
       await fetchSpeciesandHomeWorld(characters);
       return characters.count;
     }).then((count) => {
@@ -160,8 +162,8 @@ function App() {
 
   async function fetchSpeciesandHomeWorld(characters) {
     for (const element of characters.results) {
-      await getHomeworld(element.homeworld.toString().slice(21)).then(async newHomeworld => {
-        await getSpecies(element.species.toString().slice(21)).then(async newSpecies => {
+      await fetchHomeworld(element.homeworld.toString().slice(21)).then(async newHomeworld => {
+        await fetchSpecies(element.species.toString().slice(21)).then(async newSpecies => {
           setCharacterTable(characterTable => [...characterTable, {
             name: element.name,
             birth_year: element.birth_year,
@@ -174,6 +176,7 @@ function App() {
       });
     }
   }
+
   useEffect(() => {
     if (localStorage.getItem('searching') === 'true') {
 
