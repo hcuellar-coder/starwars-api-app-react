@@ -44,7 +44,7 @@ function App() {
         setCharacterTable(JSON.parse(localStorage.getItem('searchPage' + page)));
       } else {
         if (page > 1) {
-          createSearchCharacterTable(searchInput, page);
+          createSearchTable(searchInput, page);
         }
       }
     } else {
@@ -60,6 +60,10 @@ function App() {
 
   function handleSearchButton(character) {
     setSearchInput(character);
+    setLoading(true);
+    setCharacterTable([]);
+    setPage(1);
+
     if (localStorage.getItem('searching') === 'true') {
       let searchCount = localStorage.getItem('searchPaginationCount');
       for (let i = 1; i <= searchCount; i++) {
@@ -68,25 +72,24 @@ function App() {
     }
     localStorage.setItem('searching', true);
     localStorage.setItem('searchInput', character);
-    setLoading(true);
-    setCharacterTable([]);
-    setPage(1);
-    createSearchCharacterTable(character, 1);
+
+    createSearchTable(character, 1);
   }
 
   function handleClearButton() {
     setSearchInput('');
+    setPage(1);
+    setCharacterTable(JSON.parse(localStorage.getItem('page' + 1)));
+    setPaginationCount(localStorage.getItem('paginationCount'));
+
     let searchCount = localStorage.getItem('searchPaginationCount');
+    for (let i = 1; i <= searchCount; i++) {
+      localStorage.removeItem('searchPage' + i, []);
+    }
     localStorage.setItem('searching', false);
     localStorage.setItem('searchInput', '');
     localStorage.removeItem('searchPaginationCount', '');
     localStorage.removeItem('page');
-    for (let i = 1; i <= searchCount; i++) {
-      localStorage.removeItem('searchPage' + i, []);
-    }
-    setPage(1);
-    setCharacterTable(JSON.parse(localStorage.getItem('page' + 1)));
-    setPaginationCount(localStorage.getItem('paginationCount'));
   }
 
   const getCharacters = async (page) => {
@@ -141,7 +144,7 @@ function App() {
     })
   }
 
-  function createSearchCharacterTable(character, page) {
+  function createSearchTable(character, page) {
     searchCharacter(character, page).then(async characters => {
       await fetchSpeciesandHomeWorld(characters);
       return characters.count;
@@ -171,12 +174,12 @@ function App() {
   useEffect(() => {
     setLoading(true);
     setCharacterTable([]);
-    if (localStorage.getItem('page' + page)) {
+    if (localStorage.getItem('page' + 1)) {
       setLoading(false);
       setPaginationCount(localStorage.getItem('paginationCount'));
-      setCharacterTable(JSON.parse(localStorage.getItem('page' + page)));
+      setCharacterTable(JSON.parse(localStorage.getItem('page' + 1)));
     } else {
-      createCharacterTable(page);
+      createCharacterTable(1);
     }
   }, []);
 

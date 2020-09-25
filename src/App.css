@@ -35,6 +35,7 @@ body {
 }
 
 table, td, th {
+    padding: .5rem;
     border-color: aqua;
     border-style: solid;
     border-collapse: collapse;
@@ -47,27 +48,33 @@ table, td, th {
 }
 
 .cell-name {
-    min-width: 100px;
+    width: 100px;
+    max-width: 100px;
 }
 
 .cell-birthday {
-    min-width: 50px;
+    width: 50px;
+    max-width: 50px;
 }
 
 .cell-height {
-    min-width: 50px;
+    width: 50px;
+    max-width: 50px;
 }
 
 .cell-mass {
-    min-width: 50px;
+    width: 50px;
+    max-width: 50px;
 }
 
 .cell-homeworld {
-    min-width: 150px;
+    width: 100px;
+    max-width: 100px;
 }
 
 .cell-species {
-    min-width: 100px;
+    width: 100px;
+    max-width: 100px;
 }
 
 .page-link {

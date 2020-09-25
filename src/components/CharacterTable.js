@@ -19,12 +19,12 @@ function CharacterTable(props) {
                 <tbody id="character-table-body">
                     {props.characterTable.map((character, index) => (
                         <tr key={index}>
-                            <td>{character.name}</td>
-                            <td>{character.birth_year}</td>
-                            <td>{character.height}</td>
-                            <td>{character.mass}</td>
-                            <td>{character.homeworld}</td>
-                            <td>{character.species}</td>
+                            <td className="cell-name">{character.name}</td>
+                            <td className="cell-birthday">{character.birth_year}</td>
+                            <td className="cell-height">{character.height}</td>
+                            <td className="cell-mass">{character.mass}</td>
+                            <td className="cell-homeworld">{character.homeworld}</td>
+                            <td className="cell-species">{character.species}</td>
                         </tr>
                     ))}
                 </tbody>
