@@ -5,7 +5,6 @@ import CharacterTable from './components/CharacterTable';
 import TablePagination from './components/TablePagination';
 import Spinner from './components/Spinner';
 import API from './components/API';
-import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
@@ -63,6 +62,7 @@ function App() {
 
   function handleSearchButton(character) {
     setSearchInput(character);
+    setSearchFailed(false);
     setLoading(true);
     setCharacterTable([]);
     setPage(1);
@@ -128,8 +128,8 @@ function App() {
   }
 
   const searchCharacter = async (element, page) => {
-    let search = `https://swapi.dev/api/people/?search=${element}&page=${page}`;
-    return await axios
+    let search = `people/?search=${element}&page=${page}`;
+    return await API
       .get(search)
       .then((results) => {
         return results.data;
