@@ -94,7 +94,7 @@ function App() {
 
   const getCharacters = async (page) => {
     return await axios
-      .get('http://swapi.dev/api/people/?page=' + page)
+      .get('https://swapi.dev/api/people/?page=' + page)
       .then((results) => {
         return results.data;
       })
@@ -103,7 +103,7 @@ function App() {
 
   const getSpecies = async (element) => {
     if (!element) {
-      element = 'http://swapi.dev/api/species/1/';
+      element = 'https://swapi.dev/api/species/1/';
     }
 
     return await axios
