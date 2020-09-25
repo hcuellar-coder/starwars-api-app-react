@@ -175,8 +175,9 @@ function App() {
   }
   useEffect(() => {
     if (localStorage.getItem('searching') === 'true') {
-      let searchArray = JSON.parse(localStorage.getItem(`searchPage${page}`));
-      if (searchArray !== undefined && searchArray.length > 0) {
+
+      if (JSON.parse(localStorage.getItem(`searchPage${page}`)) !== undefined
+        && JSON.parse(localStorage.getItem(`searchPage${page}`)).length > 0) {
         setLoading(false);
         setSearchInput(localStorage.getItem('searchInput'));
         setPaginationCount(localStorage.getItem('searchPaginationCount'));
