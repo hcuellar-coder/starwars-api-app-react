@@ -9,11 +9,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 function App() {
-  const [paginationCount, setPaginationCount] = useState(0);
-  const [searchInput, setSearchInput] = useState('');
-  const [loading, setLoading] = useState(true)
-  const [searchFailed, setSearchFailed] = useState(false);
   const [characterTable, setCharacterTable] = useState([]);
+  const [searchInput, setSearchInput] = useState('');
+  const [searchFailed, setSearchFailed] = useState(false);
+  const [loading, setLoading] = useState(true)
+  const [paginationCount, setPaginationCount] = useState(0);
   const [page, setPage] = useState(() => {
     if (localStorage.getItem('page')) {
       return (parseInt(localStorage.getItem('page')));
