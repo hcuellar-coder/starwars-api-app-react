@@ -22,6 +22,40 @@ function App() {
     }
   });
 
+  useEffect(() => {
+    if (localStorage.getItem('searching') === 'true') {
+
+      if (JSON.parse(localStorage.getItem(`searchPage${page}`)) !== undefined
+        && JSON.parse(localStorage.getItem(`searchPage${page}`)).length > 0) {
+        setLoading(false);
+        setSearchInput(localStorage.getItem('searchInput'));
+        setPaginationCount(localStorage.getItem('searchPaginationCount'));
+        setCharacterTable(JSON.parse(localStorage.getItem(`searchPage${page}`)));
+      }
+      else {
+        setSearchInput(localStorage.getItem('searchInput'));
+        setLoading(false);
+        setSearchFailed(true);
+      }
+    } else {
+      if (localStorage.getItem(`page${page}`)) {
+        setLoading(false);
+        setPaginationCount(localStorage.getItem('paginationCount'));
+        setCharacterTable(JSON.parse(localStorage.getItem(`page${page}`)));
+      } else {
+        createCharacterTable(1);
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (localStorage.getItem('searching') === 'true') {
+      localStorage.setItem(`searchPage${page}`, JSON.stringify(characterTable));
+    } else {
+      localStorage.setItem(`page${page}`, JSON.stringify(characterTable));
+    }
+  }, [characterTable, page])
+
   function handlePagination(characterCount) {
     let pages = Math.ceil(characterCount / 10);
     if (pages < 1) {
@@ -176,40 +210,6 @@ function App() {
       });
     }
   }
-
-  useEffect(() => {
-    if (localStorage.getItem('searching') === 'true') {
-
-      if (JSON.parse(localStorage.getItem(`searchPage${page}`)) !== undefined
-        && JSON.parse(localStorage.getItem(`searchPage${page}`)).length > 0) {
-        setLoading(false);
-        setSearchInput(localStorage.getItem('searchInput'));
-        setPaginationCount(localStorage.getItem('searchPaginationCount'));
-        setCharacterTable(JSON.parse(localStorage.getItem(`searchPage${page}`)));
-      }
-      else {
-        setSearchInput(localStorage.getItem('searchInput'));
-        setLoading(false);
-        setSearchFailed(true);
-      }
-    } else {
-      if (localStorage.getItem(`page${page}`)) {
-        setLoading(false);
-        setPaginationCount(localStorage.getItem('paginationCount'));
-        setCharacterTable(JSON.parse(localStorage.getItem(`page${page}`)));
-      } else {
-        createCharacterTable(1);
-      }
-    }
-  }, [])
-
-  useEffect(() => {
-    if (localStorage.getItem('searching') === 'true') {
-      localStorage.setItem(`searchPage${page}`, JSON.stringify(characterTable));
-    } else {
-      localStorage.setItem(`page${page}`, JSON.stringify(characterTable));
-    }
-  }, [characterTable, page])
 
   const Table = () => (
     <div>

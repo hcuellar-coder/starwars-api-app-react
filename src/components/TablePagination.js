@@ -5,14 +5,14 @@ function TablePagination(props) {
     const [active, setActive] = useState(1);
     let pages = [];
 
+    useEffect(() => {
+        setActive(props.activePage);
+    }, [props.activePage])
+
     function handleClick(page) {
         setActive(page);
         props.handleNewPage(page);
     }
-
-    useEffect(() => {
-        setActive(props.activePage);
-    }, [props.activePage])
 
     for (let number = 1; number <= props.paginationCount; number++) {
         pages.push(
@@ -30,6 +30,5 @@ function TablePagination(props) {
         </div>
     )
 }
-
 
 export default TablePagination;

@@ -6,6 +6,15 @@ function SearchBar(props) {
     const [clearDisable, setclearDisable] = useState(true);
     const [searchDisable, setSearchDisable] = useState(true);
 
+    useEffect(() => {
+        if (props.searchInput !== null) {
+            setInput(props.searchInput);
+            if (props.searchInput !== '') {
+                setclearDisable(false);
+            }
+        }
+    }, [props.searchInput])
+
     function handleChange(event) {
         event.preventDefault();
         setInput(event.target.value);
@@ -20,15 +29,6 @@ function SearchBar(props) {
         setclearDisable(true);
         props.handleClearButton();
     }
-
-    useEffect(() => {
-        if (props.searchInput !== null) {
-            setInput(props.searchInput);
-            if (props.searchInput !== '') {
-                setclearDisable(false);
-            }
-        }
-    }, [props.searchInput])
 
     return (
         <div id="search-bar-div">
