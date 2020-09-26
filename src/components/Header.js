@@ -2,7 +2,7 @@ import React from 'react';
 
 function Header() {
     return (
-        <h1 id="star-wars-header">STar waRS app</h1>
+        <h1 id="star-wars-header">STar waRS api app</h1>
     )
 }
 
