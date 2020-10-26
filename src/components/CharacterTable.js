@@ -4,7 +4,7 @@ import { Table } from 'react-bootstrap';
 function CharacterTable(props) {
     return (
         <div id="character-table">
-            <Table hover striped>
+            <Table id="table" hover striped>
                 <thead id="character-table-header">
                     <tr>
                         <th className="cell-name">Name</th>

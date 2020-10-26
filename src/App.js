@@ -212,18 +212,18 @@ function App() {
   }
 
   const Table = () => (
-    <div>
+    <center>
       <TablePagination
         paginationCount={paginationCount}
         handleNewPage={handleNewPage}
         activePage={page} />
       <CharacterTable
         characterTable={characterTable} />
-    </div>
+    </center>
   )
 
   const UserInterface = () => (
-    <div>
+    <center>
       <SearchBar
         handleSearchButton={handleSearchButton}
         handleClearButton={handleClearButton}
@@ -235,7 +235,7 @@ function App() {
         </div> :
         <Table />
       }
-    </div>
+    </center>
   )
 
   return (
