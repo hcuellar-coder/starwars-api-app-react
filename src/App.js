@@ -3,6 +3,7 @@ import Header from './components/Header';
 import SearchBar from './components/SearchBar';
 import CharacterTable from './components/CharacterTable';
 import TablePagination from './components/TablePagination';
+import { fetchHomeworld } from './components/fetchHomeworld';
 import Spinner from './components/Spinner';
 import API from './components/API';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -154,15 +155,6 @@ function App() {
       .catch((err) => console.log('Error', err));
   }
 
-  const fetchHomeworld = async (element) => {
-    return await API
-      .get(element)
-      .then((results) => {
-        return results.data;
-      })
-      .catch((err) => console.log('Error', err));
-  }
-
   const searchForCharacter = async (element, page) => {
     let search = `people/?search=${element}&page=${page}`;
     return await API
@@ -195,6 +187,7 @@ function App() {
   }
 
   async function fetchSpeciesandHomeWorld(characters) {
+    console.log(characters);
     for (const element of characters.results) {
       await fetchHomeworld(element.homeworld.toString().slice(21)).then(async newHomeworld => {
         await fetchSpecies(element.species.toString().slice(21)).then(async newSpecies => {
