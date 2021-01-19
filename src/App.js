@@ -4,6 +4,7 @@ import SearchBar from './components/SearchBar';
 import CharacterTable from './components/CharacterTable';
 import TablePagination from './components/TablePagination';
 import { fetchHomeworld } from './components/fetchHomeworld';
+import { searchForCharacter } from './components/searchForCharacter';
 import Spinner from './components/Spinner';
 import API from './components/API';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -155,15 +156,6 @@ function App() {
       .catch((err) => console.log('Error', err));
   }
 
-  const searchForCharacter = async (element, page) => {
-    let search = `people/?search=${element}&page=${page}`;
-    return await API
-      .get(search)
-      .then((results) => {
-        return results.data;
-      })
-      .catch((err) => console.log('Error', err));
-  }
 
   function createCharacterTable(page) {
     localStorage.setItem('searching', false);
