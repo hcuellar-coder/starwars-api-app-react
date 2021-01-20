@@ -5,6 +5,7 @@ import CharacterTable from './components/CharacterTable';
 import TablePagination from './components/TablePagination';
 import { fetchHomeworld } from './components/fetchHomeworld';
 import { searchForCharacter } from './components/searchForCharacter';
+import { fetchCharacters } from './components/fetchCharacters';
 import Spinner from './components/Spinner';
 import API from './components/API';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -132,15 +133,6 @@ function App() {
     localStorage.setItem('searchInput', '');
     localStorage.removeItem('searchPaginationCount', '');
     localStorage.setItem('page', 1);
-  }
-
-  const fetchCharacters = async (page) => {
-    return await API
-      .get(`people/?page=${page}`)
-      .then((results) => {
-        return results.data;
-      })
-      .catch((err) => console.log('Error', err));
   }
 
   const fetchSpecies = async (element) => {
