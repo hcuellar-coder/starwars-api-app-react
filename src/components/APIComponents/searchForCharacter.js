@@ -1,4 +1,4 @@
-import API from './API';
+import API from '../API';
 
 export const searchForCharacter = async (element, page) => {
     let search = `people/?search=${element}&page=${page}`;

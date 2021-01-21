@@ -1,4 +1,4 @@
-import API from './API';
+import API from '../API';
 
 export const fetchHomeworld = async (element) => {
     return await API

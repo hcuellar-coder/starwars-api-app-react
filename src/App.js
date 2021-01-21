@@ -3,9 +3,10 @@ import Header from './components/Header';
 import SearchBar from './components/SearchBar';
 import CharacterTable from './components/CharacterTable';
 import TablePagination from './components/TablePagination';
-import { fetchHomeworld } from './components/fetchHomeworld';
-import { searchForCharacter } from './components/searchForCharacter';
-import { fetchCharacters } from './components/fetchCharacters';
+import { fetchHomeworld } from './components/APIComponents/fetchHomeworld';
+import { searchForCharacter } from './components/APIComponents/searchForCharacter';
+import { fetchCharacters } from './components/APIComponents/fetchCharacters';
+import { fetchSpecies } from './components/APIComponents/fetchSpecies';
 import Spinner from './components/Spinner';
 import API from './components/API';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -134,20 +135,6 @@ function App() {
     localStorage.removeItem('searchPaginationCount', '');
     localStorage.setItem('page', 1);
   }
-
-  const fetchSpecies = async (element) => {
-    if (!element) {
-      element = 'species/1/';
-    }
-
-    return await API
-      .get(element)
-      .then((result) => {
-        return result.data;
-      })
-      .catch((err) => console.log('Error', err));
-  }
-
 
   function createCharacterTable(page) {
     localStorage.setItem('searching', false);

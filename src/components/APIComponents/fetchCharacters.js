@@ -1,4 +1,4 @@
-import API from './API'
+import API from '../API';
 
 export const fetchCharacters = async (page) => {
     return await API
