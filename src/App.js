@@ -8,7 +8,6 @@ import { searchForCharacter } from './components/APIComponents/searchForCharacte
 import { fetchCharacters } from './components/APIComponents/fetchCharacters';
 import { fetchSpecies } from './components/APIComponents/fetchSpecies';
 import Spinner from './components/Spinner';
-import API from './components/API';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
@@ -158,7 +157,6 @@ function App() {
   }
 
   async function fetchSpeciesandHomeWorld(characters) {
-    console.log(characters);
     for (const element of characters.results) {
       await fetchHomeworld(element.homeworld.toString().slice(21)).then(async newHomeworld => {
         await fetchSpecies(element.species.toString().slice(21)).then(async newSpecies => {
